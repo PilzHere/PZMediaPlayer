@@ -1,0 +1,14 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+#playMedia {
+	-fx-background-image: url("../res/icons/iconPlay.png");
+	-fx-background-size: 24, 24;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+}
+
+#stopMedia {
+	-fx-background-image: url("../res/icons/iconStop.png");
+	-fx-background-size: 24, 24;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+}
