@@ -1,14 +1,65 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 #playMedia {
-	-fx-background-image: url("../res/icons/iconPlay.png");
-	-fx-background-size: 24, 24;
+	-fx-background-image: url("../../res/icons/iconPlay.png");
+	-fx-background-size: 24.0, 24.0;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
+	-fx-background-color: transparent;
 }
 
 #stopMedia {
-	-fx-background-image: url("../res/icons/iconStop.png");
-	-fx-background-size: 24, 24;
+	-fx-background-image: url("../../res/icons/iconStop.png");
+	-fx-background-size: 24.0, 24.0;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#pauseMedia {
+	-fx-background-image: url("../../res/icons/iconPause.png");
+	-fx-background-size: 24.0, 24.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#splitPane .split-pane-divider {
+    -fx-padding: 0.0 0.0 0.0 0.0;
+}
+
+#sliderMedia {
+	-fx-shadow-highlight-color: #404040;
+	-fx-text-box-border: #404040;
+	-fx-control-inner-background: #404040;
+}
+
+#sliderMedia .thumb {
+    -fx-background-color: white;
+}
+
+#sliderVolume {
+	-fx-shadow-highlight-color: #404040;
+	-fx-text-box-border: #404040;
+	-fx-control-inner-background: #404040;
+}
+
+#menuBar .label {
+	-fx-text-fill: white;
+}
+
+.menu:hover, .menu:showing{
+  -fx-background-color: #404040;
+}
+
+.menu-item {
+	-fx-background-color: #121212;
+	-fx-text-fill: white;
+}
+
+.menu-item:hover {
+	-fx-background-color: #404040;
+}
+
+.menu .context-menu {
+	-fx-padding: 0 0 0 0;
 }
