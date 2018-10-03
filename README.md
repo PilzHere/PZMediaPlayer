@@ -5,17 +5,17 @@ PZ MediaPlayer is a music and video media player coded in Java.
 **Latest stable release is 0.0.0.**
 
 ## Supported media formats:
-### Audio:
+### Audio
 * .AIFF
 * .MP3
 * .WAV
 
-### Video:
+### Video
 * .FLV
 * .MP4
 
 
-## Tested platforms:
+## Tested platforms
 
 * Windows (10)
 
@@ -24,8 +24,8 @@ PZ MediaPlayer is a music and video media player coded in Java.
 Should work but not tested on Mac OS X and Unix (Solaris, FreeBSD).
 
 
-## Build:
-Bulit with: jdk1.8.0_181.
+## Build
+JDK: 1.8.0_181.
 
 Dependencies:
 
