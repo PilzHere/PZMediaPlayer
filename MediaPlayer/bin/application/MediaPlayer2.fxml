@@ -10,6 +10,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
@@ -39,13 +40,14 @@
          <items>
             <AnchorPane fx:id="anchorMusic" maxWidth="205.0" minWidth="205.0" prefHeight="638.0" prefWidth="0.0" style="-fx-background-color: #181818;">
                <children>
-                  <Label fx:id="musicLabel" prefHeight="20.0" prefWidth="74.0" text=" Music List" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Label fx:id="musicLabel" alignment="CENTER" layoutX="72.0" text=" Music" textAlignment="CENTER" textFill="#b3b3b3" AnchorPane.leftAnchor="72.0" AnchorPane.rightAnchor="72.0" AnchorPane.topAnchor="0.0">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="addMedia" layoutX="74.0" layoutY="-2.0" mnemonicParsing="false" onAction="#addMediaButtonAction" text="+" />
-                  <ListView fx:id="musicList" editable="true" layoutY="20.0" onMouseClicked="#musicListMouseClickedAction" prefWidth="205.0" style="-fx-background-color: #181818;" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0" />
+                  <Button fx:id="addMusic" layoutX="154.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addMediaButtonAction" prefHeight="25.0" prefWidth="25.0" text="+" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="0.0" />
+                  <Button fx:id="removeMusic" layoutX="180.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="-" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <ListView fx:id="musicList" editable="true" layoutY="27.0" onMouseClicked="#musicListMouseClickedAction" prefHeight="611.0" prefWidth="205.0" style="-fx-background-color: #181818;" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
                </children>
             </AnchorPane>
             <StackPane fx:id="mediaStackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="960.0" style="-fx-background-color: #000000;">
@@ -59,31 +61,35 @@
             </StackPane>
             <AnchorPane fx:id="anchorVideos" maxWidth="205.0" minWidth="205.0" prefWidth="205.0" style="-fx-background-color: #181818;">
                <children>
-                  <Label prefHeight="20.0" prefWidth="74.0" text=" Video list" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Label alignment="CENTER" layoutX="68.0" text=" Videos" textAlignment="CENTER" textFill="#b3b3b3" AnchorPane.leftAnchor="68.0" AnchorPane.rightAnchor="67.0" AnchorPane.topAnchor="0.0">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <ListView fx:id="videosList" layoutY="20.0" prefWidth="205.0" style="-fx-background-color: #181818;" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0" />
+                  <ListView fx:id="videosList" layoutY="27.0" prefHeight="611.0" prefWidth="205.0" style="-fx-background-color: #181818;" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
                </children>
             </AnchorPane>
          </items>
       </SplitPane>
-      <AnchorPane prefHeight="55.0" prefWidth="1280.0" style="-fx-background-color: #282828;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <AnchorPane prefHeight="50.0" prefWidth="1280.0" style="-fx-background-color: #282828;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <Label fx:id="mediaTimePlayed" layoutX="21.0" layoutY="1.0" text="00:00:00" textAlignment="CENTER" textFill="#b3b3b3" AnchorPane.leftAnchor="21.0" />
             <Label fx:id="mediaTimeEnd" layoutX="1214.0" layoutY="1.0" text="00:00:00" textAlignment="CENTER" textFill="#b3b3b3" AnchorPane.rightAnchor="21.0" />
             <Slider fx:id="sliderMedia" layoutX="62.0" layoutY="2.0" maxWidth="1.7976931348623157E308" onMouseClicked="#sliderMediaMouseClickAction" onMouseDragged="#sliderMediaMouseDraggedAction" onMousePressed="#sliderMediaMousePressedAction" onMouseReleased="#sliderMediaMouseReleasedAction" prefHeight="14.0" prefWidth="1145.0" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0" />
-            <Button fx:id="playMedia" layoutX="11.0" layoutY="21.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#playAndPauseMediaButttonAction" prefHeight="25.0" prefWidth="35.0" styleClass="none" stylesheets="@application.css" text="PLAY" AnchorPane.leftAnchor="11.0" />
-            <Button fx:id="pauseMedia" disable="true" layoutX="11.0" layoutY="21.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#playAndPauseMediaButttonAction" prefHeight="25.0" prefWidth="35.0" stylesheets="@application.css" text="PAUSE" visible="false" AnchorPane.leftAnchor="11.0" />
-            <Button fx:id="stopMedia" layoutX="46.0" layoutY="21.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#stopMediaButttonAction" prefHeight="25.0" prefWidth="35.0" stylesheets="@application.css" text="STOP" AnchorPane.leftAnchor="46.0" />
-            <Button layoutX="116.0" layoutY="21.0" mnemonicParsing="false" text="&lt;&lt;" AnchorPane.leftAnchor="116.0" />
-            <Button layoutX="149.0" layoutY="21.0" mnemonicParsing="false" text="&gt;&gt;" AnchorPane.leftAnchor="149.0" />
             <Label fx:id="volumeLabel0" layoutX="1131.0" layoutY="16.0" prefHeight="35.0" prefWidth="35.0" stylesheets="@application.css" text="Volume0" visible="false" AnchorPane.rightAnchor="114.0" />
             <Label fx:id="volumeLabel1" layoutX="1131.0" layoutY="16.0" prefHeight="35.0" prefWidth="35.0" stylesheets="@application.css" text="Volume1" textFill="#b3b3b3" AnchorPane.rightAnchor="114.0" />
             <Label fx:id="volumeLabel2" layoutX="1131.0" layoutY="16.0" prefHeight="35.0" prefWidth="35.0" stylesheets="@application.css" text="Volume2" visible="false" AnchorPane.rightAnchor="114.0" />
             <Label fx:id="volumeLabel3" layoutX="1131.0" layoutY="16.0" prefHeight="35.0" prefWidth="35.0" stylesheets="@application.css" text="Volume3" visible="false" AnchorPane.rightAnchor="114.0" />
             <Slider fx:id="sliderVolume" blockIncrement="5.0" layoutX="1116.0" layoutY="26.0" maxHeight="15.0" maxWidth="100.0" minHeight="15.0" minWidth="100.0" prefHeight="15.0" prefWidth="100.0" style="-fx-background-color: #282828;" AnchorPane.rightAnchor="14.0" />
+            <HBox alignment="CENTER" layoutY="20.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="1280.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Button fx:id="playMedia" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="35.0" mnemonicParsing="false" onAction="#playAndPauseMediaButttonAction" prefHeight="25.0" prefWidth="35.0" stylesheets="@application.css" text="PLAY" translateX="53.0" />
+                  <Button fx:id="stopMedia" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="35.0" mnemonicParsing="false" onAction="#stopMediaButttonAction" prefHeight="25.0" prefWidth="35.0" stylesheets="@application.css" text="STOP" translateX="54.0" />
+                  <Button fx:id="pauseMedia" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="35.0" mnemonicParsing="false" onAction="#playAndPauseMediaButttonAction" prefHeight="25.0" prefWidth="35.0" stylesheets="@application.css" text="PAUSE" translateX="-17.0" visible="false" />
+                  <Button fx:id="previousMedia" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="35.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" text="PREVIOUS" translateX="-88.0" />
+                  <Button fx:id="nextMedia" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="35.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" text="NEXT" translateX="-15.0" />
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
       <StackPane fx:id="mediaStackPaneFullscreen" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #000000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

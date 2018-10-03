@@ -1,7 +1,8 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
 #playMedia {
 	-fx-background-image: url("../../res/icons/iconPlay.png");
-	-fx-background-size: 24.0, 24.0;
+	-fx-background-size: 28.0, 28.0;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
 	-fx-background-color: transparent;
@@ -9,7 +10,7 @@
 
 #stopMedia {
 	-fx-background-image: url("../../res/icons/iconStop.png");
-	-fx-background-size: 24.0, 24.0;
+	-fx-background-size: 28.0, 28.0;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
 	-fx-background-color: transparent;
@@ -17,7 +18,39 @@
 
 #pauseMedia {
 	-fx-background-image: url("../../res/icons/iconPause.png");
-	-fx-background-size: 24.0, 24.0;
+	-fx-background-size: 28.0, 28.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#previousMedia {
+	-fx-background-image: url("../../res/icons/iconPrevious.png");
+	-fx-background-size: 22.0, 22.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#nextMedia {
+	-fx-background-image: url("../../res/icons/iconNext.png");
+	-fx-background-size: 22.0, 22.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#addMusic {
+	-fx-background-image: url("../../res/icons/iconPlus.png");
+	-fx-background-size: 22.0, 22.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#removeMusic {
+	-fx-background-image: url("../../res/icons/iconMinus.png");
+	-fx-background-size: 22.0, 22.0;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
 	-fx-background-color: transparent;
@@ -34,7 +67,7 @@
 }
 
 #sliderMedia .thumb {
-    -fx-background-color: white;
+    -fx-background-color: white; 
 }
 
 #sliderVolume {
@@ -61,5 +94,5 @@
 }
 
 .menu .context-menu {
-	-fx-padding: 0 0 0 0;
+	-fx-padding: 0.0 0.0 0.0 0.0;
 }

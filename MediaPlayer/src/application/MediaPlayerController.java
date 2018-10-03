@@ -47,7 +47,7 @@ public class MediaPlayerController implements Initializable {
 	private ListView<String> musicList, videosList;
 
 	@FXML
-	private Button playMedia, pauseMedia, stopMedia;
+	private Button playMedia, pauseMedia, stopMedia, previousMedia, nextMedia, addMusic, removeMusic;
 
 	@FXML
 	private Slider sliderMedia, sliderVolume;
@@ -57,9 +57,14 @@ public class MediaPlayerController implements Initializable {
 		sliderVolume.setValue(25);
 		mediaStackPaneFullscreen.setDisable(true);
 
+		clearButtonText(addMusic);
+		clearButtonText(removeMusic);
+		
 		clearButtonText(playMedia);
 		clearButtonText(pauseMedia);
 		clearButtonText(stopMedia);
+		clearButtonText(nextMedia);
+		clearButtonText(previousMedia);
 
 		clearLabelText(volumeLabel0);
 		clearLabelText(volumeLabel1);
