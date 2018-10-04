@@ -8,8 +8,24 @@
 	-fx-background-color: transparent;
 }
 
+#playMedia:hover {
+	-fx-background-image: url("../../res/icons/iconPlayWhite.png");
+	-fx-background-size: 28.0, 28.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
 #stopMedia {
 	-fx-background-image: url("../../res/icons/iconStop.png");
+	-fx-background-size: 28.0, 28.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#stopMedia:hover {
+	-fx-background-image: url("../../res/icons/iconStopWhite.png");
 	-fx-background-size: 28.0, 28.0;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
@@ -24,8 +40,24 @@
 	-fx-background-color: transparent;
 }
 
+#pauseMedia:hover {
+	-fx-background-image: url("../../res/icons/iconPauseWhite.png");
+	-fx-background-size: 28.0, 28.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
 #previousMedia {
 	-fx-background-image: url("../../res/icons/iconPrevious.png");
+	-fx-background-size: 22.0, 22.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#previousMedia:hover {
+	-fx-background-image: url("../../res/icons/iconPreviousWhite.png");
 	-fx-background-size: 22.0, 22.0;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
@@ -40,8 +72,24 @@
 	-fx-background-color: transparent;
 }
 
+#nextMedia:hover {
+	-fx-background-image: url("../../res/icons/iconNextWhite.png");
+	-fx-background-size: 22.0, 22.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
 #addMusic {
 	-fx-background-image: url("../../res/icons/iconPlus.png");
+	-fx-background-size: 22.0, 22.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#addMusic:hover {
+	-fx-background-image: url("../../res/icons/iconPlusWhite.png");
 	-fx-background-size: 22.0, 22.0;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
@@ -51,6 +99,46 @@
 #removeMusic {
 	-fx-background-image: url("../../res/icons/iconMinus.png");
 	-fx-background-size: 22.0, 22.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#removeMusic:hover {
+	-fx-background-image: url("../../res/icons/iconMinusWhite.png");
+	-fx-background-size: 22.0, 22.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#volumeLabel0 {
+	-fx-background-image: url("../../res/icons/iconVolumeMute.png");
+	-fx-background-size: 28.0, 28.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#volumeLabel1 {
+	-fx-background-image: url("../../res/icons/iconVolumeLow.png");
+	-fx-background-size: 28.0, 28.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#volumeLabel2 {
+	-fx-background-image: url("../../res/icons/iconVolumeMedium.png");
+	-fx-background-size: 28.0, 28.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#volumeLabel3 {
+	-fx-background-image: url("../../res/icons/iconVolumeHigh.png");
+	-fx-background-size: 28.0, 28.0;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
 	-fx-background-color: transparent;

@@ -73,15 +73,15 @@
       </SplitPane>
       <AnchorPane prefHeight="50.0" prefWidth="1280.0" style="-fx-background-color: #282828;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Label fx:id="mediaTimePlayed" layoutX="21.0" layoutY="1.0" text="00:00:00" textAlignment="CENTER" textFill="#b3b3b3" AnchorPane.leftAnchor="21.0" />
-            <Label fx:id="mediaTimeEnd" layoutX="1214.0" layoutY="1.0" text="00:00:00" textAlignment="CENTER" textFill="#b3b3b3" AnchorPane.rightAnchor="21.0" />
+            <Label fx:id="mediaTimePlayed" layoutX="15.0" layoutY="1.0" text="00:00:00" textAlignment="CENTER" textFill="#b3b3b3" AnchorPane.leftAnchor="15.0" />
+            <Label fx:id="mediaTimeEnd" layoutX="1220.0" layoutY="1.0" text="00:00:00" textAlignment="CENTER" textFill="#b3b3b3" AnchorPane.rightAnchor="15.0" />
             <Slider fx:id="sliderMedia" layoutX="62.0" layoutY="2.0" maxWidth="1.7976931348623157E308" onMouseClicked="#sliderMediaMouseClickAction" onMouseDragged="#sliderMediaMouseDraggedAction" onMousePressed="#sliderMediaMousePressedAction" onMouseReleased="#sliderMediaMouseReleasedAction" prefHeight="14.0" prefWidth="1145.0" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0" />
             <Label fx:id="volumeLabel0" layoutX="1131.0" layoutY="16.0" prefHeight="35.0" prefWidth="35.0" stylesheets="@application.css" text="Volume0" visible="false" AnchorPane.rightAnchor="114.0" />
             <Label fx:id="volumeLabel1" layoutX="1131.0" layoutY="16.0" prefHeight="35.0" prefWidth="35.0" stylesheets="@application.css" text="Volume1" textFill="#b3b3b3" AnchorPane.rightAnchor="114.0" />
             <Label fx:id="volumeLabel2" layoutX="1131.0" layoutY="16.0" prefHeight="35.0" prefWidth="35.0" stylesheets="@application.css" text="Volume2" visible="false" AnchorPane.rightAnchor="114.0" />
             <Label fx:id="volumeLabel3" layoutX="1131.0" layoutY="16.0" prefHeight="35.0" prefWidth="35.0" stylesheets="@application.css" text="Volume3" visible="false" AnchorPane.rightAnchor="114.0" />
             <Slider fx:id="sliderVolume" blockIncrement="5.0" layoutX="1116.0" layoutY="26.0" maxHeight="15.0" maxWidth="100.0" minHeight="15.0" minWidth="100.0" prefHeight="15.0" prefWidth="100.0" style="-fx-background-color: #282828;" AnchorPane.rightAnchor="14.0" />
-            <HBox alignment="CENTER" layoutY="20.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="1280.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <HBox alignment="CENTER" layoutX="211.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="854.0" AnchorPane.leftAnchor="211.0" AnchorPane.rightAnchor="215.0">
                <children>
                   <Button fx:id="playMedia" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="35.0" mnemonicParsing="false" onAction="#playAndPauseMediaButttonAction" prefHeight="25.0" prefWidth="35.0" stylesheets="@application.css" text="PLAY" translateX="53.0" />
                   <Button fx:id="stopMedia" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="35.0" mnemonicParsing="false" onAction="#stopMediaButttonAction" prefHeight="25.0" prefWidth="35.0" stylesheets="@application.css" text="STOP" translateX="54.0" />
@@ -92,6 +92,11 @@
             </HBox>
          </children>
       </AnchorPane>
+      <Label fx:id="labelTitleArtistAlbumYear" alignment="CENTER" contentDisplay="TOP" layoutX="211.0" layoutY="585.0" prefHeight="80.0" prefWidth="858.0" text="Title - Artist - Album - Year- Image" textAlignment="CENTER" textFill="#bebebe" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="211.0" AnchorPane.rightAnchor="211.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
       <StackPane fx:id="mediaStackPaneFullscreen" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #000000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>
