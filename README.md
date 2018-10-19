@@ -4,6 +4,8 @@ PZ MediaPlayer is a music and video media player.
 
 **Latest stable release is 0.6.4.**
 
+![](https://github.com/PilzHere/PZMediaPlayer/blob/master/pzMediaPlayerFront.png?raw=true)
+
 ## Supported media formats
 ### Audio
 * .AIFF
