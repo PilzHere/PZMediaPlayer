@@ -21,17 +21,17 @@
         <menus>
           <Menu fx:id="menuFile" mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#menuCloseApp" text="Close" />
             </items>
           </Menu>
           <Menu fx:id="menuEdit" mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem mnemonicParsing="false" onAction="#addMediaButtonAction" text="Add media" />
             </items>
           </Menu>
-          <Menu fx:id="menuHelp" mnemonicParsing="false" text="Help">
+          <Menu fx:id="menuHelp" mnemonicParsing="false" text="About">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#sendToWebLink" text="PZ Media Player v0.6.4 by Christian &quot;PilzHere&quot; Pilz" />
             </items>
           </Menu>
         </menus>
@@ -46,7 +46,7 @@
                      </font>
                   </Label>
                   <Button fx:id="addMusic" layoutX="154.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addMediaButtonAction" prefHeight="25.0" prefWidth="25.0" text="+" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="0.0" />
-                  <Button fx:id="removeMusic" layoutX="180.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="-" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <Button fx:id="removeMusic" layoutX="180.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeMusicButtonAction" prefHeight="25.0" prefWidth="25.0" text="-" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <ListView fx:id="musicList" editable="true" layoutY="27.0" onMouseClicked="#musicListMouseClickedAction" prefHeight="611.0" prefWidth="205.0" style="-fx-background-color: #181818;" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
                </children>
             </AnchorPane>
@@ -66,7 +66,9 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <ListView fx:id="videosList" layoutY="27.0" prefHeight="611.0" prefWidth="205.0" style="-fx-background-color: #181818;" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
+                  <Button fx:id="addVideo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addMediaButtonAction" prefHeight="25.0" prefWidth="25.0" text="+" />
+                  <Button fx:id="removeVideo" layoutX="26.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeVideoButtonAction" prefHeight="25.0" prefWidth="25.0" text="-" />
+                  <ListView fx:id="videosList" layoutY="27.0" onMouseClicked="#videosListMouseClickedAction" prefHeight="611.0" prefWidth="205.0" style="-fx-background-color: #181818;" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
                </children>
             </AnchorPane>
          </items>

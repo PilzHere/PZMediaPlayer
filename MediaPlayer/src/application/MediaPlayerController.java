@@ -1,10 +1,16 @@
 package application;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import helpers.FileExtensionReader;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
@@ -30,31 +36,40 @@ import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import media.PZMedia;
+import media.music.PZMusic;
+import media.video.PZMovie;
 
 public class MediaPlayerController implements Initializable {
+
+	final static String APP_TITLE = "PZ Media Player";
+	final static String APP_VERISON = "0.6.4";
+	final static String GITHUB_LINK = "https://github.com/PilzHere/PZMediaPlayer";
+
 	@FXML
-	private Label mediaTimePlayed, mediaTimeEnd, volumeLabel0, volumeLabel1, volumeLabel2, volumeLabel3,
+	Label mediaTimePlayed, mediaTimeEnd, volumeLabel0, volumeLabel1, volumeLabel2, volumeLabel3,
 			labelTitleArtistAlbumYear;
 
 	@FXML
-	private StackPane mediaStackPane, mediaStackPaneFullscreen;
+	StackPane mediaStackPane, mediaStackPaneFullscreen;
 
 	@FXML
-	private MediaView mediaView;
+	MediaView mediaView;
 
 	@FXML
-	private MenuBar menuBar;
+	MenuBar menuBar;
 
 	@FXML
-	private ListView<String> musicList, videosList;
-	
-//	private ArrayList<String> musicArraylist();
+	ListView<String> musicList, videosList;
 
 	@FXML
-	private Button playMedia, pauseMedia, stopMedia, previousMedia, nextMedia, addMusic, removeMusic;
+	Button playMedia, pauseMedia, stopMedia, previousMedia, nextMedia, addMusic, removeMusic, addVideo, removeVideo;
 
 	@FXML
-	private Slider sliderMedia, sliderVolume;
+	Slider sliderMedia, sliderVolume;
+
+	ArrayList<PZMusic> musicClassList = new ArrayList<>();
+	ArrayList<PZMovie> videosClassList = new ArrayList<>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -63,6 +78,8 @@ public class MediaPlayerController implements Initializable {
 
 		clearButtonText(addMusic);
 		clearButtonText(removeMusic);
+		clearButtonText(addVideo);
+		clearButtonText(removeVideo);
 
 		clearButtonText(playMedia);
 		clearButtonText(pauseMedia);
@@ -71,246 +88,322 @@ public class MediaPlayerController implements Initializable {
 		clearButtonText(previousMedia);
 
 		clearLabelText(labelTitleArtistAlbumYear);
-		
+
 		clearLabelText(volumeLabel0);
 		clearLabelText(volumeLabel1);
 		clearLabelText(volumeLabel2);
 		clearLabelText(volumeLabel3);
 	}
 
-	private void clearLabelText(Label label) {
+	void clearLabelText(Label label) {
 		label.setText("");
 	}
 
-	private void clearButtonText(Button button) {
+	void clearButtonText(Button button) {
 		button.setText("");
 	}
 
 //	Sound extension filters.
-	private final FileChooser.ExtensionFilter extFilterAny = new FileChooser.ExtensionFilter("Any (*.*)", "*");
-	private final FileChooser.ExtensionFilter extFilterAiff = new FileChooser.ExtensionFilter("AIFF (*.aiff)",
-			"*.aiff");
-	private final FileChooser.ExtensionFilter extFilterMp3 = new FileChooser.ExtensionFilter("MP3 (*.mp3)", "*.mp3");
-	private final FileChooser.ExtensionFilter extFilterWav = new FileChooser.ExtensionFilter("WAV (*.wav)", "*.wav");
+	final FileChooser.ExtensionFilter extFilterAny = new FileChooser.ExtensionFilter("Any (*.*)", "*");
+	final FileChooser.ExtensionFilter extFilterAiff = new FileChooser.ExtensionFilter("AIFF (*.aiff)", "*.aiff");
+	final FileChooser.ExtensionFilter extFilterMp3 = new FileChooser.ExtensionFilter("MP3 (*.mp3)", "*.mp3");
+	final FileChooser.ExtensionFilter extFilterWav = new FileChooser.ExtensionFilter("WAV (*.wav)", "*.wav");
 
 //	Video extension filters.
-	private final FileChooser.ExtensionFilter extFilterFLV = new FileChooser.ExtensionFilter("FLV (*.flv)", "*.flv");
-	private final FileChooser.ExtensionFilter extFilterMpeg4 = new FileChooser.ExtensionFilter("MPEG4 (*.mp4)",
-			"*.mp4");
+	final FileChooser.ExtensionFilter extFilterFLV = new FileChooser.ExtensionFilter("FLV (*.flv)", "*.flv");
+	final FileChooser.ExtensionFilter extFilterMpeg4 = new FileChooser.ExtensionFilter("MPEG4 (*.mp4)", "*.mp4");
 
-	private final String extMp4 = "mp4";
-	private final String extWav = "wav";
-	private final String extMp3 = "mp3";
-	private final String extAiff = "aiff";
-	private final String extFlv = "flv";
+	final String extMp4 = "mp4";
+	final String extWav = "wav";
+	final String extMp3 = "mp3";
+	final String extAiff = "aiff";
+	final String extFlv = "flv";
 
-	private String filePath;
-	private MediaPlayer mediaPlayer;
+	MediaPlayer mediaPlayer;
 
-	private double oldVolume;
-	private boolean volumeReset = false;
+	double oldVolume;
+	boolean volumeReset = false;
 
-	private Stage stage;
+	Stage stage;
 
 //	resizing window
-	private boolean widthListenerSet = false;
-	private boolean heightListenerSet = false;
-	
-//	time
-	private final int secondsInMinute = 60;
-	private final int secondsInHour = 3600;
-	
-//	current track time
-	private int currentTrackToHoursPlayed;
-	private int currentTrackToMinsPlayed;
-	private int currentTrackToSecsPlayed;
-	
-	private int currentTrackToHoursEnd;
-	private int currentTrackToMinsEnd;
-	private int currentTrackToSecsEnd;
-	
-	@FXML
-	private void addMediaButtonAction(ActionEvent event) {
-		FileChooser fileChooser = new FileChooser();
+	boolean widthListenerSet = false;
+	boolean heightListenerSet = false;
 
+//	time
+	final int secondsInMinute = 60;
+	final int secondsInHour = 3600;
+
+//	current track time
+	int currentTrackToHoursPlayed;
+	int currentTrackToMinsPlayed;
+	int currentTrackToSecsPlayed;
+
+	int currentTrackToHoursEnd;
+	int currentTrackToMinsEnd;
+	int currentTrackToSecsEnd;
+
+	String getFilepathForMediaFile(File file) {
+//		If add-media window is cancelled...
+		if (file != null) {
+			String filePath = file.toURI().toString();
+			return filePath;
+		} else {
+			System.err.println("ERROR: File is null. FileChooser was canceled.");
+			return null;
+		}
+	}
+
+	PZMedia decideTypeOfMedia(String fileExtension, PZMedia tempMedia, String filePath) {
+		if (fileExtension.equals(extMp4) || fileExtension.equals(extFlv)) {
+			return tempMedia = new PZMovie(filePath);
+//			videosList.getItems().add(tempMedia);
+		} else if (fileExtension.equals(extAiff) || fileExtension.equals(extMp3) || fileExtension.equals(extWav)) {
+			return tempMedia = new PZMusic(filePath);
+//			musicList.getItems().add(tempMedia);
+		} else {
+			tempMedia = null;
+			return tempMedia;
+		}
+	}
+
+	void resetVolume(boolean reset) {
+		if (!reset) {
+			mediaPlayer.setVolume(0.25f);
+			volumeReset = true;
+		} else {
+			mediaPlayer.setVolume(oldVolume);
+		}
+	}
+
+	void disposeMediaplayerIfNeeded(MediaPlayer mediaPlayer) {
+		if (mediaPlayer != null) {
+			oldVolume = mediaPlayer.getVolume();
+			mediaPlayer.dispose();
+		}
+	}
+
+	@FXML
+	void addMediaButtonAction(ActionEvent event) {
+		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(extFilterAny, extFilterAiff, extFilterMp3, extFilterWav, extFilterFLV,
 				extFilterMpeg4);
 
-//		Resetting filepath.
-		filePath = null;
-
-//		Opens the add-media window.
+//		Opens the "choose file" window.
 		File file = fileChooser.showOpenDialog(null);
-
-//		System.out.println("" + getFileExtension(file));
-
-//		If add-media window is cancelled...
-		if (file != null) {
-			filePath = file.toURI().toString();
-
-			System.out.println();
-		}
+		String filePath = getFilepathForMediaFile(file);
 
 		if (filePath != null && !filePath.isEmpty()) {
+			PZMedia tempMedia = null;
 			String fileExtension = FileExtensionReader.getExtension(filePath);
-			if (fileExtension.equals(extMp4) || fileExtension.equals(extFlv)) {
-				videosList.getItems().add(filePath);
-			} else if (fileExtension.equals(extAiff) || fileExtension.equals(extMp3) || fileExtension.equals(extWav)) {
-				musicList.getItems().add(filePath);
+			tempMedia = decideTypeOfMedia(fileExtension, tempMedia, filePath);
+
+			if (tempMedia != null) {
+				Media media = new Media(tempMedia.getFilePath());
+				tempMedia.setDisplayName(file.getName());
+
+				clearCurrentMediaStrings();
+				addMetadataListener(media);
+				disposeMediaplayerIfNeeded(mediaPlayer);
+
+				mediaPlayer = new MediaPlayer(media);
+				addMediaToAppropriateList(tempMedia);
+
+				resetVolume(volumeReset);
+				mediaView.setMediaPlayer(mediaPlayer);
+				mediaView.setPreserveRatio(true);
+
+				if (stage == null) {
+					stage = (Stage) mediaView.getScene().getWindow();
+//					stage.setFullScreenExitHint("Doubleclick any mousebutton to exit fullscreen.");
+					stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+				}
+
+////				Test, if exclusive mode...
+//				((Stage) stage.getScene().getWindow()).toBack();
+//				((Stage) stage.getScene().getWindow()).toFront();
+
+				mediaPlayer.seek(mediaPlayer.getStartTime());
+				mediaPlayer.play();
+				isPlaying = true;
+
+				switchPlayOrPauseButtonActive();
+
+				addVolumeListener();
+				addTimeListener();
+				setWidthAndHeightListener();
+
+				setOnMediaFinished();
+//				System.out.println("Media was added.");
 			} else {
 				System.err.println("ERROR: File format not supported.");
-				return;
 			}
-			
-			Media media = new Media(filePath);
-
-			media.getMetadata().addListener(new MapChangeListener<String, Object>() {
-				@Override
-				public void onChanged(Change<? extends String, ? extends Object> ch) {
-					if (ch.wasAdded()) {
-						handleMetadata(ch.getKey(), ch.getValueAdded());
-					}
-				}
-			});
-
-			if (mediaPlayer != null) {
-				oldVolume = mediaPlayer.getVolume();
-				mediaPlayer.dispose();
-			}
-
-			mediaPlayer = new MediaPlayer(media);
-
-			if (!volumeReset) {
-				mediaPlayer.setVolume(0.25f);
-				volumeReset = true;
-			} else {
-				mediaPlayer.setVolume(oldVolume);
-			}
-
-			mediaView.setMediaPlayer(mediaPlayer);
-			mediaView.setPreserveRatio(true);
-
-			if (stage == null) {
-				stage = (Stage) mediaView.getScene().getWindow();
-
-//				stage.setFullScreenExitHint("Doubleclick any mousebutton to exit fullscreen.");
-				stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-			}
-
-////			Test, if exlusive mode...
-//			((Stage) stage.getScene().getWindow()).toBack();
-//			((Stage) stage.getScene().getWindow()).toFront();
-
-			mediaPlayer.seek(mediaPlayer.getStartTime());
-			mediaPlayer.play();
-			isPlaying = true;
-
-			updatePlayButtonText();
-
-			sliderVolume.setValue(mediaPlayer.getVolume() * 100);
-			sliderVolume.valueProperty().addListener(new InvalidationListener() {
-				@Override
-				public void invalidated(Observable observable) {
-					mediaPlayer.setVolume(sliderVolume.getValue() / 100);
-
-					updateVolumeLabels(mediaPlayer.getVolume());
-//					System.out.println("Volume: " + mediaPlayer.getVolume() + " | " + "Slider: " + sliderVolume.getValue());
-				}
-			});
-			
-			mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
-				@Override
-				public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
-						Duration newValue) {
-					if (!sliderMedia.isValueChanging()) {
-					sliderMedia.maxProperty().set(mediaPlayer.getTotalDuration().toSeconds());
-					sliderMedia.setValue(newValue.toSeconds());
-
-					currentTrackToHoursPlayed = (int)mediaPlayer.getCurrentTime().toSeconds() / secondsInHour;
-					currentTrackToMinsPlayed = (int)(mediaPlayer.getCurrentTime().toSeconds() % secondsInHour) / secondsInMinute;
-					currentTrackToSecsPlayed = (int)mediaPlayer.getCurrentTime().toSeconds() % secondsInMinute;
-
-					mediaTimePlayed.setText(String.format("%02d:%02d:%02d", currentTrackToHoursPlayed, currentTrackToMinsPlayed, currentTrackToSecsPlayed));
-
-					currentTrackToHoursEnd = (int)mediaPlayer.getStopTime().toSeconds() / secondsInHour;
-					currentTrackToMinsEnd = (int)(mediaPlayer.getStopTime().toSeconds() % secondsInHour) / secondsInMinute;
-					currentTrackToSecsEnd = (int)mediaPlayer.getStopTime().toSeconds() % secondsInMinute;
-					
-					mediaTimeEnd.setText(String.format("%02d:%02d:%02d", currentTrackToHoursEnd, currentTrackToMinsEnd, currentTrackToSecsEnd));
-					}
-				}
-			});
-
-			if (!widthListenerSet) {
-				stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-					DoubleProperty width = mediaView.fitWidthProperty();
-					width.bind(Bindings.selectDouble(mediaView.parentProperty(), "width"));
-					mediaView.autosize();
-				});
-				widthListenerSet = true;
-			}
-
-			if (!heightListenerSet) {
-				stage.heightProperty().addListener((obs, oldVal, newVal) -> {
-					DoubleProperty height = mediaView.fitHeightProperty();
-					height.bind(Bindings.selectDouble(mediaView.parentProperty(), "height"));
-					mediaView.autosize();
-				});
-				heightListenerSet = true;
-			}
-
-			mediaPlayer.setOnEndOfMedia(new Runnable() {
-				@Override
-				public void run() {
-					mediaPlayer.stop();
-
-					isPlaying = false;
-
-					updatePlayButtonText();
-
-					mediaTimePlayed.setText("00:00:00");
-				}
-			});
-
-			System.out.println("Media was added.");
 		} else {
 			System.err.println("ERROR: No media was added.");
 		}
 	}
 
-	private String currentTitle;
-	private String currentArtist;
-	private String currentAlbum;
-	private String currentYear;
-	private void handleMetadata(String key, Object value) {		
-		if (key.equals("title")) {
-			currentTitle = value.toString();
-		}
-		if (key.equals("album artist")) {
-				currentArtist = value.toString();
-		}
-		if (key.equals("album")) {
-			currentAlbum = value.toString(); 
-		}
-		if (key.equals("year")) {
-			currentYear = value.toString();
-		}
-//		if (key.equals("image")) {
-//			albumCover.setImage((Image) value);
-//		}
-		
-//		System.err.println("title: " + currentTitle);
-//		System.err.println("artist: " + currentArtist);
-//		System.err.println("album: " + currentAlbum);
-//		System.err.println("year: " + currentYear);
-		
-		labelTitleArtistAlbumYear.setText(currentTitle + " - " + currentArtist + "\n" + currentAlbum + " - " + currentYear);
+	void setOnMediaFinished() {
+		mediaPlayer.setOnEndOfMedia(new Runnable() {
+			@Override
+			public void run() {
+				mediaPlayer.stop();
+				isPlaying = false;
+				switchPlayOrPauseButtonActive();
+				clearPlayedTime();
+			}
+		});
 	}
 
-	private final float volumeHigh = 0.66f;
-	private final float volumeMedium = 0.33f;
-	
-	private void updateVolumeLabels(double volume) {
+	void addMetadataListener(Media media) {
+		media.getMetadata().addListener(new MapChangeListener<String, Object>() {
+			@Override
+			public void onChanged(Change<? extends String, ? extends Object> ch) {
+				if (ch.wasAdded()) {
+					handleMetadata(ch.getKey(), ch.getValueAdded());
+					labelTitleArtistAlbumYear
+							.setText(currentTitle + " - " + currentArtist + "\n" + currentAlbum + " - " + currentYear);
+				}
+			}
+		});
+	}
+
+	void addVolumeListener() {
+		sliderVolume.setValue(mediaPlayer.getVolume() * 100);
+		sliderVolume.valueProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				mediaPlayer.setVolume(sliderVolume.getValue() / 100);
+				updateVolumeLabels(mediaPlayer.getVolume());
+//				System.out.println("Volume: " + mediaPlayer.getVolume() + " | " + "Slider: " + sliderVolume.getValue());
+			}
+		});
+	}
+
+	void addTimeListener() {
+		mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+			@Override
+			public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+				if (!sliderMedia.isValueChanging()) {
+					sliderMedia.maxProperty().set(mediaPlayer.getTotalDuration().toSeconds());
+					sliderMedia.setValue(newValue.toSeconds());
+
+					currentTrackToHoursPlayed = (int) mediaPlayer.getCurrentTime().toSeconds() / secondsInHour;
+					currentTrackToMinsPlayed = (int) (mediaPlayer.getCurrentTime().toSeconds() % secondsInHour)
+							/ secondsInMinute;
+					currentTrackToSecsPlayed = (int) mediaPlayer.getCurrentTime().toSeconds() % secondsInMinute;
+
+					mediaTimePlayed.setText(String.format("%02d:%02d:%02d", currentTrackToHoursPlayed,
+							currentTrackToMinsPlayed, currentTrackToSecsPlayed));
+
+					currentTrackToHoursEnd = (int) mediaPlayer.getStopTime().toSeconds() / secondsInHour;
+					currentTrackToMinsEnd = (int) (mediaPlayer.getStopTime().toSeconds() % secondsInHour)
+							/ secondsInMinute;
+					currentTrackToSecsEnd = (int) mediaPlayer.getStopTime().toSeconds() % secondsInMinute;
+
+					mediaTimeEnd.setText(String.format("%02d:%02d:%02d", currentTrackToHoursEnd, currentTrackToMinsEnd,
+							currentTrackToSecsEnd));
+				}
+			}
+		});
+	}
+
+	void setWidthAndHeightListener() {
+		if (!widthListenerSet) {
+			stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+				DoubleProperty width = mediaView.fitWidthProperty();
+				width.bind(Bindings.selectDouble(mediaView.parentProperty(), "width"));
+				mediaView.autosize();
+			});
+			widthListenerSet = true;
+		}
+
+		if (!heightListenerSet) {
+			stage.heightProperty().addListener((obs, oldVal, newVal) -> {
+				DoubleProperty height = mediaView.fitHeightProperty();
+				height.bind(Bindings.selectDouble(mediaView.parentProperty(), "height"));
+				mediaView.autosize();
+			});
+			heightListenerSet = true;
+		}
+	}
+
+	@FXML
+	void removeMusicButtonAction(ActionEvent event) {
+		int index = musicList.getSelectionModel().getSelectedIndex();
+		if (!musicList.getItems().isEmpty() && !musicClassList.isEmpty()) {
+			musicList.getItems().remove(index);
+			musicClassList.remove(index);
+		}
+	}
+
+	@FXML
+	void removeVideoButtonAction(ActionEvent event) {
+		int index = videosList.getSelectionModel().getSelectedIndex();
+		if (!videosList.getItems().isEmpty() && !videosClassList.isEmpty()) {
+			videosList.getItems().remove(index);
+			videosClassList.remove(index);
+		}
+	}
+
+	void clearCurrentMediaStrings() {
+		currentTitle = "";
+		currentArtist = "";
+		currentAlbum = "";
+		currentYear = "";
+	}
+
+	String currentTitle;
+	String currentArtist;
+	String currentAlbum;
+	String currentYear;
+//	Image currentImage;
+
+	void handleMetadata(String key, Object value) {
+		switch (key) {
+		case "album":
+			currentAlbum = value.toString();
+			break;
+		case "artist":
+			currentArtist = value.toString();
+			break;
+		case "title":
+			currentTitle = value.toString();
+			break;
+		case "year":
+			currentYear = value.toString();
+			break;
+//		    case "image":
+//		        currentCover.setImage((Image)value);
+//		        break;
+		}
+	}
+
+	void addMediaToAppropriateList(PZMedia tempMedia) {
+		if (tempMedia instanceof PZMovie) {
+//			tempMedia.setTitle(currentTitle);
+//			tempMedia.setYear(currentYear);
+
+//			tempMedia.setDisplayName(currentTitle + " - " + currentYear);
+			videosList.getItems().add(tempMedia.getDisplayName());
+			videosClassList.add((PZMovie) tempMedia);
+		} else if (tempMedia instanceof PZMusic) {
+//			tempMedia.setTitle(currentTitle);
+//			((PZMusic) tempMedia).setArtist(currentArtist);
+//			((PZMusic) tempMedia).setAlbum(currentAlbum);
+//			tempMedia.setYear(currentYear);
+
+//			tempMedia.setDisplayName(currentTitle + " - " + currentArtist + " - " + currentAlbum + " - " + currentYear);
+
+			musicList.getItems().add(tempMedia.getDisplayName());
+			musicClassList.add((PZMusic) tempMedia);
+		}
+	}
+
+	final float volumeHigh = 0.66f;
+	final float volumeMedium = 0.33f;
+
+	void updateVolumeLabels(double volume) {
 		if (volume == 0) {
 			volumeLabel0.setVisible(true);
 			volumeLabel1.setVisible(false);
@@ -337,10 +430,15 @@ public class MediaPlayerController implements Initializable {
 	}
 
 	@FXML
-	private void musicListMouseClickedAction(MouseEvent event) {
+	void menuCloseApp(ActionEvent event) {
+		Platform.exit();
+	}
+
+	@FXML
+	void musicListMouseClickedAction(MouseEvent event) {
 //		System.out.println("clicked on " + musicList.getSelectionModel().getSelectedItem());
 		String filePath;
-		
+
 		if (event.getClickCount() == 2) {
 			if (mediaPlayer != null) {
 				oldVolume = mediaPlayer.getVolume();
@@ -348,7 +446,8 @@ public class MediaPlayerController implements Initializable {
 			}
 
 			if (musicList.getSelectionModel().getSelectedItem() != null) {
-				filePath = musicList.getSelectionModel().getSelectedItem().toString();
+//				System.out.println("selected in list: " + musicList.getSelectionModel().getSelectedIndex());
+				filePath = musicClassList.get(musicList.getSelectionModel().getSelectedIndex()).getFilePath();
 			} else {
 				System.err.println("ERROR: Selected item is null.");
 				return;
@@ -357,17 +456,10 @@ public class MediaPlayerController implements Initializable {
 			if (filePath != null && !filePath.isEmpty()) {
 				Media media = new Media(filePath);
 
-				media.getMetadata().addListener(new MapChangeListener<String, Object>() {
-					@Override
-					public void onChanged(Change<? extends String, ? extends Object> ch) {
-						if (ch.wasAdded()) {
-							handleMetadata(ch.getKey(), ch.getValueAdded());
-						}
-					}
-				});
-				
-				mediaPlayer = new MediaPlayer(media);
+				clearCurrentMediaStrings();
+				addMetadataListener(media);
 
+				mediaPlayer = new MediaPlayer(media);
 				mediaPlayer.setVolume(oldVolume);
 
 				mediaView.setMediaPlayer(mediaPlayer);
@@ -377,82 +469,60 @@ public class MediaPlayerController implements Initializable {
 				mediaPlayer.play();
 				isPlaying = true;
 
-				updatePlayButtonText();
+				switchPlayOrPauseButtonActive();
 
-//				sliderVolume.setValue(mediaPlayer.getVolume() * 100);
-//				sliderVolume.valueProperty().addListener(new InvalidationListener() {
-//					@Override
-//					public void invalidated(Observable observable) {
-//						mediaPlayer.setVolume(sliderVolume.getValue() / 100);
-////						System.out.println("Volume: " + mediaPlayer.getVolume() + " | " + "Slider: " + sliderVolume.getValue());
-//					}
-//				});
+				addTimeListener();
+				setWidthAndHeightListener();
 
-				mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
-					@Override
-					public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
-							Duration newValue) {
-//						if (!sliderMedia.isValueChanging()) {
-						sliderMedia.maxProperty().set(mediaPlayer.getTotalDuration().toSeconds());
-						sliderMedia.setValue(newValue.toSeconds());
+				setOnMediaFinished();
+			} else {
+				System.err.println("ERROR: No media to play.");
+			}
+		}
+	}
 
-						double toHoursPlayed = mediaPlayer.getCurrentTime().toHours();
-						String inHoursPlayed = "" + toHoursPlayed;
-						double toMinsPlayed = mediaPlayer.getCurrentTime().toMinutes();
-						String inMinsPlayed = "" + toMinsPlayed;
-						double toSecsPlayed = mediaPlayer.getCurrentTime().toSeconds();
-						String inSecsPlayed = "" + toSecsPlayed;
+//	FORWARD - BACKWARD?!
 
-						mediaTimePlayed.setText(inHoursPlayed.substring(0, 1) + ":" + inMinsPlayed.substring(0, 1) + ":"
-								+ inSecsPlayed.substring(0, 2));
+	@FXML
+	void videosListMouseClickedAction(MouseEvent event) {
+//		System.out.println("clicked on " + musicList.getSelectionModel().getSelectedItem());
+		String filePath;
 
-//							mediaTimePlayed.setText(mediaPlayer.getCurrentTime().toSeconds() / 60 / 60 + ":"
-//							+ mediaPlayer.getCurrentTime().toSeconds() / 60 + ":"
-//									+ mediaPlayer.getCurrentTime().toSeconds());
+		if (event.getClickCount() == 2) {
+			if (mediaPlayer != null) {
+				oldVolume = mediaPlayer.getVolume();
+				mediaPlayer.dispose();
+			}
 
-						double toHoursEnd = mediaPlayer.getStopTime().toHours();
-						String inHoursEnd = "" + toHoursEnd;
-						double toMinsEnd = mediaPlayer.getStopTime().toMinutes();
-						String inMinsEnd = "" + toMinsEnd;
-						double toSecsEnd = mediaPlayer.getStopTime().toSeconds();
-						String inSecsEnd = "" + toSecsEnd;
+			if (videosList.getSelectionModel().getSelectedItem() != null) {
+//				System.out.println("selected in list: " + musicList.getSelectionModel().getSelectedIndex());
+				filePath = videosClassList.get(videosList.getSelectionModel().getSelectedIndex()).getFilePath();
+			} else {
+				System.err.println("ERROR: Selected item is null.");
+				return;
+			}
 
-						mediaTimeEnd.setText(inHoursEnd.substring(0, 1) + ":" + inMinsEnd.substring(0, 1) + ":"
-								+ inSecsEnd.substring(0, 2));
-//						}
-					}
-				});
+			if (filePath != null && !filePath.isEmpty()) {
+				Media media = new Media(filePath);
+				clearCurrentMediaStrings();
+				addMetadataListener(media);
 
-				if (!widthListenerSet) {
-					stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-						DoubleProperty width = mediaView.fitWidthProperty();
-						width.bind(Bindings.selectDouble(mediaView.parentProperty(), "width"));
-						mediaView.autosize();
-					});
-					widthListenerSet = true;
-				}
+				mediaPlayer = new MediaPlayer(media);
+				mediaPlayer.setVolume(oldVolume);
 
-				if (!heightListenerSet) {
-					stage.heightProperty().addListener((obs, oldVal, newVal) -> {
-						DoubleProperty height = mediaView.fitHeightProperty();
-						height.bind(Bindings.selectDouble(mediaView.parentProperty(), "height"));
-						mediaView.autosize();
-					});
-					heightListenerSet = true;
-				}
+				mediaView.setMediaPlayer(mediaPlayer);
+				mediaView.setPreserveRatio(true);
 
-				mediaPlayer.setOnEndOfMedia(new Runnable() {
-					@Override
-					public void run() {
-						mediaPlayer.stop();
+				mediaPlayer.seek(mediaPlayer.getStartTime());
+				mediaPlayer.play();
+				isPlaying = true;
 
-						isPlaying = false;
+				switchPlayOrPauseButtonActive();
 
-						updatePlayButtonText();
+				addTimeListener();
+				setWidthAndHeightListener();
 
-						mediaTimePlayed.setText("00:00:00");
-					}
-				});
+				setOnMediaFinished();
 			} else {
 				System.err.println("ERROR: No media to play.");
 			}
@@ -460,7 +530,7 @@ public class MediaPlayerController implements Initializable {
 	}
 
 	@FXML
-	private void mediaviewMouseClickAction(MouseEvent event) {
+	void mediaviewMouseClickAction(MouseEvent event) {
 		if (mediaPlayer != null) {
 			if (isPlaying) {
 				mediaPlayer.pause();
@@ -509,15 +579,15 @@ public class MediaPlayerController implements Initializable {
 					stage.getScene().setCursor(Cursor.DEFAULT);
 				}
 			}
-			updatePlayButtonText();
+			switchPlayOrPauseButtonActive();
 		}
 	}
 
-	private boolean browsingMediaSeeker = false;
+	boolean browsingMediaSeeker = false;
 
 	@FXML
-	private void sliderMediaMouseClickAction(MouseEvent event) {
-//		System.out.println("4");
+	void sliderMediaMouseClickAction(MouseEvent event) {
+//		System.out.println("Test 4");
 		if (mediaPlayer != null) {
 			if (!browsingMediaSeeker) {
 				mediaPlayer.pause();
@@ -529,31 +599,31 @@ public class MediaPlayerController implements Initializable {
 				browsingMediaSeeker = false;
 			}
 
-			updatePlayButtonText();
+			switchPlayOrPauseButtonActive();
 		}
 	}
 
 	@FXML
-	private void sliderMediaMousePressedAction(MouseEvent event) {
-//		System.out.println("1");
+	void sliderMediaMousePressedAction(MouseEvent event) {
+//		System.out.println("Test 1");
 		if (mediaPlayer != null) {
 			mediaPlayer.pause();
 
-			updatePlayButtonText();
+			switchPlayOrPauseButtonActive();
 		}
 	}
 
 	@FXML
-	private void sliderMediaMouseDraggedAction(MouseEvent event) {
-//		System.out.println("2");
+	void sliderMediaMouseDraggedAction(MouseEvent event) {
+//		System.out.println("Test 2");
 		if (mediaPlayer != null) {
 			mediaPlayer.seek(Duration.seconds(sliderMedia.getValue()));
 		}
 	}
 
 	@FXML
-	private void sliderMediaMouseReleasedAction(MouseEvent event) {
-//		System.out.println("3");
+	void sliderMediaMouseReleasedAction(MouseEvent event) {
+//		System.out.println("Test 3");
 		if (mediaPlayer != null) {
 			if (isPlaying) {
 				if (browsingMediaSeeker) {
@@ -561,11 +631,11 @@ public class MediaPlayerController implements Initializable {
 				}
 			}
 
-			updatePlayButtonText();
+			switchPlayOrPauseButtonActive();
 		}
 	}
 
-	private void updatePlayButtonText() {
+	void switchPlayOrPauseButtonActive() {
 		if (isPlaying) {
 			pauseMedia.setDisable(false);
 			pauseMedia.setVisible(true);
@@ -581,7 +651,9 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
-	private void playOrPauseMedia() {
+	boolean isPlaying = false;
+
+	void playOrPauseMedia() {
 		if (mediaPlayer != null) {
 			if (!isPlaying) {
 				mediaPlayer.play();
@@ -592,30 +664,42 @@ public class MediaPlayerController implements Initializable {
 			}
 
 			isPlaying = !isPlaying;
-
-			updatePlayButtonText();
+			switchPlayOrPauseButtonActive();
 		}
 	}
 
-	private boolean isPlaying = false;
-
 	@FXML
-	private void playAndPauseMediaButttonAction(ActionEvent event) {
+	void playAndPauseMediaButttonAction(ActionEvent event) {
 		playOrPauseMedia();
 	}
 
+	void clearPlayedTime() {
+		mediaTimePlayed.setText("00:00:00");
+	}
+
 	@FXML
-	private void stopMediaButttonAction(ActionEvent event) {
+	void stopMediaButttonAction(ActionEvent event) {
 		if (mediaPlayer != null) {
 			mediaPlayer.seek(mediaPlayer.getTotalDuration());
 			mediaPlayer.stop();
 
 			isPlaying = false;
-
-			updatePlayButtonText();
-
-			mediaTimePlayed.setText("00:00:00");
+			switchPlayOrPauseButtonActive();
+			clearPlayedTime();
 //			System.out.println("Media stopped.");
+		}
+	}
+
+	@FXML
+	void sendToWebLink(ActionEvent event) {
+		if (Desktop.isDesktopSupported()) {
+			try {
+				Desktop.getDesktop().browse(new URI(GITHUB_LINK));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} catch (URISyntaxException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 }

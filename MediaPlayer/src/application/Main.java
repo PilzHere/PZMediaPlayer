@@ -12,16 +12,14 @@ public class Main extends Application {
 		launch(args);
 	}
 
-	private final String appTitle = "MediaPlayer";
-
-////	If we want exlusive look of the application...
+////	If we want exclusive look of the application...
 //	private double xOffset = 0; 
 //	private double yOffset = 0;
-	
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			primaryStage.setTitle(appTitle);
+			primaryStage.setTitle(MediaPlayerController.APP_TITLE);
 
 			Parent root = FXMLLoader.load(getClass().getResource("MediaPlayer2.fxml"));
 
@@ -29,8 +27,8 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 			primaryStage.setScene(scene);
-			
-////			If we want exlusive look of the application...
+
+////			If we want exclusive look of the application...
 //			primaryStage.initStyle(StageStyle.UNDECORATED);
 //			root.setOnMousePressed(new EventHandler<MouseEvent>() {
 //	            @Override
@@ -46,7 +44,7 @@ public class Main extends Application {
 //	                primaryStage.setY(event.getScreenY() - yOffset);
 //	            }
 //	        });
-			
+
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,5 +1,3 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-
 #playMedia {
 	-fx-background-image: url("../../res/icons/iconPlay.png");
 	-fx-background-size: 28.0, 28.0;
@@ -112,6 +110,83 @@
 	-fx-background-color: transparent;
 }
 
+.list-view .list-cell:even {
+	-fx-background-color: #272727;
+	-fx-text-fill: white;
+}
+.list-view .list-cell:odd {
+	-fx-background-color: #282828;
+	-fx-text-fill: white;
+}
+
+.list-view .list-cell:hover {
+    -fx-background-color: #434343;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #434343;
+}
+
+.list-view .scroll-bar .thumb {
+	-fx-background-color: #404040;
+}
+
+.list-view .scroll-bar .thumb:hover {
+	-fx-background-color: #b3b3b3;
+}
+
+.list-view .scroll-bar .thumb:selected {
+	-fx-background-color: #b3b3b3;
+}
+
+.list-view .scroll-bar .track {
+	-fx-background-color: #282828;
+}
+
+.list-view .scroll-bar .increment-button {
+	-fx-background-color: #282828;
+}
+
+.list-view .scroll-bar .decrement-button {
+	-fx-background-color: #282828;
+}
+
+.list-view .scroll-bar{
+	-fx-background-color: #282828;
+}
+
+#addVideo {
+	-fx-background-image: url("../../res/icons/iconPlus.png");
+	-fx-background-size: 22.0, 22.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#addVideo:hover {
+	-fx-background-image: url("../../res/icons/iconPlusWhite.png");
+	-fx-background-size: 22.0, 22.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#removeVideo {
+	-fx-background-image: url("../../res/icons/iconMinus.png");
+	-fx-background-size: 22.0, 22.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
+#removeVideo:hover {
+	-fx-background-image: url("../../res/icons/iconMinusWhite.png");
+	-fx-background-size: 22.0, 22.0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-color: transparent;
+}
+
 #volumeLabel0 {
 	-fx-background-image: url("../../res/icons/iconVolumeMute.png");
 	-fx-background-size: 28.0, 28.0;
@@ -169,7 +244,7 @@
 }
 
 .menu:hover, .menu:showing{
-  -fx-background-color: #404040;
+	 -fx-background-color: #404040;
 }
 
 .menu-item {
