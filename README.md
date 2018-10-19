@@ -2,7 +2,7 @@
 
 PZ MediaPlayer is a music and video media player.
 
-**Latest stable release is 0.0.0.**
+**Latest stable release is 0.6.4.**
 
 ## Supported media formats
 ### Audio
