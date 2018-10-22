@@ -2,6 +2,10 @@ package media.music;
 
 import media.PZMedia;
 
+/**
+ * Music media class.
+ * @author PilzHere
+ */
 public class PZMusic extends PZMedia {
 
 	public PZMusic(String filePath) {

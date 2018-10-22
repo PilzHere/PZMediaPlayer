@@ -1,6 +1,16 @@
 package helpers;
 
+/**
+ * This object is used to read filenames.
+ * @author PilzHere
+ * */
 public class FileExtensionReader {
+	
+	/**
+	 * Fetches the extension of the file from it's filename.
+	 * @param filename
+	 * @return
+	 */
 	public static String getExtension(String filename) {
 		if (filename == null) {
 			return null;

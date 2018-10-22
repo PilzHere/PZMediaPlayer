@@ -1,5 +1,9 @@
 package media;
 
+/**
+ * This class stores stores data from the media such as filepath, displayname, title and year.
+ * @author PilzHere
+ */
 public class PZMedia {
 	String displayName;
 

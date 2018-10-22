@@ -40,6 +40,10 @@ import media.PZMedia;
 import media.music.PZMusic;
 import media.video.PZMovie;
 
+/**
+ * The controller for the mediaplayer application.
+ * @author PilzHere
+ */
 public class MediaPlayerController implements Initializable {
 
 	final static String APP_TITLE = "PZ Media Player";
@@ -71,6 +75,10 @@ public class MediaPlayerController implements Initializable {
 	ArrayList<PZMusic> musicClassList = new ArrayList<>();
 	ArrayList<PZMovie> videosClassList = new ArrayList<>();
 
+	
+	/**
+	 * Initialize controller.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		sliderVolume.setValue(25);
@@ -95,10 +103,18 @@ public class MediaPlayerController implements Initializable {
 		clearLabelText(volumeLabel3);
 	}
 
+	/**
+	 * Clear javaFx labels text content.
+	 * @param label - the label to clear the text.
+	 */
 	void clearLabelText(Label label) {
 		label.setText("");
 	}
 
+	/**
+	 * Clear javaFx button text content.
+	 * @param button - the button to clear the text.
+	 */
 	void clearButtonText(Button button) {
 		button.setText("");
 	}
@@ -143,6 +159,11 @@ public class MediaPlayerController implements Initializable {
 	int currentTrackToMinsEnd;
 	int currentTrackToSecsEnd;
 
+	/**
+	 * Get the file's path of media.
+	 * @param file - the file to look for it's path.
+	 * @return the file's path.
+	 */
 	String getFilepathForMediaFile(File file) {
 //		If add-media window is cancelled...
 		if (file != null) {
@@ -154,6 +175,13 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * Decides if media type is a song of a video.
+	 * @param fileExtension - the end of a filename. (.avi, .mp3...)
+	 * @param tempMedia - media file.
+	 * @param filePath - path of meda file.
+	 * @return movieclass or audioclass.
+	 */
 	PZMedia decideTypeOfMedia(String fileExtension, PZMedia tempMedia, String filePath) {
 		if (fileExtension.equals(extMp4) || fileExtension.equals(extFlv)) {
 			return tempMedia = new PZMovie(filePath);
@@ -167,6 +195,10 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * If volume has not been reset, it will reset.
+	 * @param reset - if false reset.
+	 */
 	void resetVolume(boolean reset) {
 		if (!reset) {
 			mediaPlayer.setVolume(0.25f);
@@ -176,6 +208,10 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * Disposes mediaplayer.
+	 * @param mediaPlayer - if not null: dispose.
+	 */
 	void disposeMediaplayerIfNeeded(MediaPlayer mediaPlayer) {
 		if (mediaPlayer != null) {
 			oldVolume = mediaPlayer.getVolume();
@@ -183,6 +219,10 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * Action for "add media" button.
+	 * @param event
+	 */
 	@FXML
 	void addMediaButtonAction(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
@@ -243,6 +283,10 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	
+	/**
+	 * Stops media when played to end. Updates "play/pause" button and resets displayed play-time.
+	 */
 	void setOnMediaFinished() {
 		mediaPlayer.setOnEndOfMedia(new Runnable() {
 			@Override
@@ -255,6 +299,10 @@ public class MediaPlayerController implements Initializable {
 		});
 	}
 
+	/**
+	 * Fetches metadata from media.
+	 * @param media - the media to get metadata from.
+	 */
 	void addMetadataListener(Media media) {
 		media.getMetadata().addListener(new MapChangeListener<String, Object>() {
 			@Override
@@ -268,6 +316,9 @@ public class MediaPlayerController implements Initializable {
 		});
 	}
 
+	/**
+	 * Updates volume slider with volume from mediaplayer.
+	 */
 	void addVolumeListener() {
 		sliderVolume.setValue(mediaPlayer.getVolume() * 100);
 		sliderVolume.valueProperty().addListener(new InvalidationListener() {
@@ -280,6 +331,10 @@ public class MediaPlayerController implements Initializable {
 		});
 	}
 
+	
+	/**
+	 * Updates timeslider with content played from mediaplayer.
+	 */
 	void addTimeListener() {
 		mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 			@Override
@@ -308,6 +363,9 @@ public class MediaPlayerController implements Initializable {
 		});
 	}
 
+	/**
+	 * Updates the rectangle of played media. The size of displayed video content.
+	 */
 	void setWidthAndHeightListener() {
 		if (!widthListenerSet) {
 			stage.widthProperty().addListener((obs, oldVal, newVal) -> {
@@ -328,6 +386,10 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * The event fired when using "Remove music" button.
+	 * @param event
+	 */
 	@FXML
 	void removeMusicButtonAction(ActionEvent event) {
 		int index = musicList.getSelectionModel().getSelectedIndex();
@@ -337,6 +399,10 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * The event fired when using "Remove video" button.
+	 * @param event
+	 */
 	@FXML
 	void removeVideoButtonAction(ActionEvent event) {
 		int index = videosList.getSelectionModel().getSelectedIndex();
@@ -346,6 +412,9 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * Clears text of current played metadata.
+	 */
 	void clearCurrentMediaStrings() {
 		currentTitle = "";
 		currentArtist = "";
@@ -359,6 +428,12 @@ public class MediaPlayerController implements Initializable {
 	String currentYear;
 //	Image currentImage;
 
+	
+	/**
+	 * Fetches metadata from file.
+	 * @param key - the key to look for.
+	 * @param value - the value to get.
+	 */
 	void handleMetadata(String key, Object value) {
 		switch (key) {
 		case "album":
@@ -379,6 +454,10 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * Adds the media class to appropriate ArrayList.
+	 * @param tempMedia - the mediaclass to add.
+	 */
 	void addMediaToAppropriateList(PZMedia tempMedia) {
 		if (tempMedia instanceof PZMovie) {
 //			tempMedia.setTitle(currentTitle);
@@ -403,6 +482,10 @@ public class MediaPlayerController implements Initializable {
 	final float volumeHigh = 0.66f;
 	final float volumeMedium = 0.33f;
 
+	/**
+	 * Updates the icon for volume depending of value.
+	 * @param volume - mediaplayer volume.
+	 */
 	void updateVolumeLabels(double volume) {
 		if (volume == 0) {
 			volumeLabel0.setVisible(true);
@@ -429,11 +512,22 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	
+	/**
+	 * The event to fire when closing the app from the menubar.
+	 * @param event
+	 */
 	@FXML
 	void menuCloseApp(ActionEvent event) {
 		Platform.exit();
 	}
 
+	
+	/**
+	 * The event to fire when clicking on an element in the music list.
+	 * Doubleclick: play song.
+	 * @param event
+	 */
 	@FXML
 	void musicListMouseClickedAction(MouseEvent event) {
 //		System.out.println("clicked on " + musicList.getSelectionModel().getSelectedItem());
@@ -483,6 +577,11 @@ public class MediaPlayerController implements Initializable {
 
 //	FORWARD - BACKWARD?!
 
+	/**
+	 * The event to fire when clicking on an element in the video list.
+	 * Doubleclick: play video.
+	 * @param event
+	 */
 	@FXML
 	void videosListMouseClickedAction(MouseEvent event) {
 //		System.out.println("clicked on " + musicList.getSelectionModel().getSelectedItem());
@@ -529,6 +628,11 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * Pauses/unpauses media if singleclick.
+	 * Fullscreen/back to original size if doubleclick.
+	 * @param event
+	 */
 	@FXML
 	void mediaviewMouseClickAction(MouseEvent event) {
 		if (mediaPlayer != null) {
@@ -585,6 +689,11 @@ public class MediaPlayerController implements Initializable {
 
 	boolean browsingMediaSeeker = false;
 
+	/**
+	 * Event to fire when clicking the media slider.
+	 * Chosen media pauses and seeks to slider value.
+	 * @param event
+	 */
 	@FXML
 	void sliderMediaMouseClickAction(MouseEvent event) {
 //		System.out.println("Test 4");
@@ -603,6 +712,11 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * Event to fire when pressing the media slider.
+	 * Chosen media pauses.
+	 * @param event
+	 */
 	@FXML
 	void sliderMediaMousePressedAction(MouseEvent event) {
 //		System.out.println("Test 1");
@@ -613,6 +727,11 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * Event to fire when dragging the media slider.
+	 * Chosen media seeks to slider value.
+	 * @param event
+	 */
 	@FXML
 	void sliderMediaMouseDraggedAction(MouseEvent event) {
 //		System.out.println("Test 2");
@@ -621,6 +740,11 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * Event to fire when releasing the media slider.
+	 * Chosen media plays.
+	 * @param event
+	 */
 	@FXML
 	void sliderMediaMouseReleasedAction(MouseEvent event) {
 //		System.out.println("Test 3");
@@ -635,6 +759,11 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	
+	/**
+	 * Updates the Play and Pause buttons.
+	 * Only one should be visible and enabled at time.
+	 */
 	void switchPlayOrPauseButtonActive() {
 		if (isPlaying) {
 			pauseMedia.setDisable(false);
@@ -653,6 +782,9 @@ public class MediaPlayerController implements Initializable {
 
 	boolean isPlaying = false;
 
+	/**
+	 * Plays or pauses mediaplayer.
+	 */
 	void playOrPauseMedia() {
 		if (mediaPlayer != null) {
 			if (!isPlaying) {
@@ -668,15 +800,29 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	
+	/**
+	 * The event to fire when using the Play and Pause buttons.
+	 * @param event
+	 */
 	@FXML
 	void playAndPauseMediaButttonAction(ActionEvent event) {
 		playOrPauseMedia();
 	}
 
+	/**
+	 * Clears displayed playtime of current media.
+	 */
 	void clearPlayedTime() {
 		mediaTimePlayed.setText("00:00:00");
 	}
 
+	
+	/**
+	 * The event to fire when using the Stop button.
+	 * Stops media.
+	 * @param event
+	 */
 	@FXML
 	void stopMediaButttonAction(ActionEvent event) {
 		if (mediaPlayer != null) {
@@ -690,6 +836,10 @@ public class MediaPlayerController implements Initializable {
 		}
 	}
 
+	/**
+	 * If desktop is supported it will open link to project page in default web browser.
+	 * @param event
+	 */
 	@FXML
 	void sendToWebLink(ActionEvent event) {
 		if (Desktop.isDesktopSupported()) {
